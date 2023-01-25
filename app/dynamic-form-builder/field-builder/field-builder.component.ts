@@ -10,11 +10,12 @@ import { Component, Input, OnInit } from '@angular/core';
     </label>
     <div class="col-md-9" [ngSwitch]="field.type">
       <textbox *ngSwitchCase="'text'" [field]="field" [form]="form.get(field.name)"></textbox>
+      <date *ngSwitchCase="'date'" [field]="field" [form]="form.get(field.name)"></date>
       <dropdown *ngSwitchCase="'dropdown'" [field]="field" [form]="form.get(field.name)"></dropdown>
       <checkbox *ngSwitchCase="'checkbox'" [field]="field" [form]="form.get(field.name)"></checkbox>
       <radio *ngSwitchCase="'radio'" [field]="field" [form]="form.get(field.name)"></radio>
       <file *ngSwitchCase="'file'" [field]="field" [form]="form.get(field.name)"></file>
-      <div class="alert alert-danger my-1 p-2 fadeInDown animated" *ngIf="!isValid && isDirty">{{field.label}} is required</div>
+      <div class="alert alert-danger my-1 p-2 fadeInDown animated" *ngIf="!isValid && isDirty">{{field.label}} is invalid </div>
     </div>
   </div>
   `,
@@ -24,6 +25,7 @@ export class FieldBuilderComponent implements OnInit {
   @Input() form: any;
 
   get isValid() {
+    console.log(this.form.controls[this.field.name]);
     return this.form.controls[this.field.name].valid;
   }
   get isDirty() {

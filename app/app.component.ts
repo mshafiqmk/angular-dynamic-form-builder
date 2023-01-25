@@ -1,5 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import moment = require('moment');
+
+export class CustomValidators {
+  static dateBetween(dateMin: string, dateMax: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (control.value == null) {
+        return null;
+      }
+
+      const controlDate = moment(control.value, 'YYYY-MM-DD');
+
+      if (!controlDate.isValid()) {
+        return null;
+      }
+
+      const validationMinDate = moment(dateMin);
+      const validationMaxDate = moment(dateMax);
+
+      return controlDate.isBetween(validationMinDate, validationMaxDate)
+        ? null
+        : {
+            'date-minimum': {
+              'date-minimum': validationMinDate.format('YYYY-MM-DD'),
+              actual: controlDate.format('YYYY-MM-DD'),
+            },
+          };
+    };
+  }
+}
 
 @Component({
   selector: 'my-app',
@@ -18,6 +48,13 @@ export class AppComponent implements OnInit {
           type: 'text',
           name: 'firstName',
           label: 'First Name',
+          value: '',
+          required: true,
+        },
+        {
+          type: 'date',
+          name: 'date',
+          label: 'Date',
           value: '',
           required: true,
         },
@@ -124,6 +161,13 @@ export class AppComponent implements OnInit {
               new FormControl(false)
             );
           });
+        } else if (x.type == 'date') {
+          group.addControl(
+            x.name,
+            new FormControl('', [
+              CustomValidators.dateBetween('2020-01-01', '2024-01-01'),
+            ])
+          );
         } else {
           group.addControl(
             x.name,

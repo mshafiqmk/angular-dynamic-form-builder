@@ -10,22 +10,21 @@ import { DropDownComponent } from './atoms/dropdown';
 import { FileComponent } from './atoms/file';
 import { CheckBoxComponent } from './atoms/checkbox';
 import { RadioComponent } from './atoms/radio';
+import { DateBoxComponent } from './atoms/date';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   declarations: [
     DynamicFormBuilderComponent,
     FieldBuilderComponent,
     TextBoxComponent,
+    DateBoxComponent,
     DropDownComponent,
     CheckBoxComponent,
     FileComponent,
-    RadioComponent
+    RadioComponent,
   ],
   exports: [DynamicFormBuilderComponent],
-  providers: []
+  providers: [],
 })
-export class DynamicFormBuilderModule { }
+export class DynamicFormBuilderModule {}
